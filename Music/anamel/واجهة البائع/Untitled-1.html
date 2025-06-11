@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم البائع - المنتجات الريفية الجزائرية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.css">
+    <link rel="stylesheet" href="Untitled-1.css">
+    <link rel="stylesheet" href="product-form.css">
+</head>
+<body>
+    <script src="dashboard.js"></script>
+    <script src="document.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // إضافة منتج جديد
+            const addProductBtn = document.getElementById('add-product-btn');
+            const addProductForm = document.getElementById('add-product-form');
+            const closeFormBtn = document.getElementById('close-form-btn');
+            const cancelProductBtn = document.getElementById('cancel-product-btn');
+            const saveProductBtn = document.getElementById('save-product-btn');
+            const productsList = document.getElementById('products-list');
+            
+            // عرض نموذج إضافة منتج
+            addProductBtn.addEventListener('click', function() {
+                addProductForm.style.display = 'block';
+            });
+            
+            // إغلاق نموذج إضافة منتج
+            closeFormBtn.addEventListener('click', function() {
+                addProductForm.style.display = 'none';
+            });
+            
+            // إلغاء إضافة منتج
+            cancelProductBtn.addEventListener('click', function() {
+                addProductForm.style.display = 'none';
+            });
+            
+            // معاينة صورة المنتج
+            const productImage = document.getElementById('product-image');
+            const imagePreview = document.getElementById('image-preview');
+            
+            productImage.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.innerHTML = `<img src="${e.target.result}" alt="معاينة المنتج">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // حفظ المنتج
+            saveProductBtn.addEventListener('click', function() {
+                const title = document.getElementById('product-title').value;
+                const description = document.getElementById('product-description').value;
+                const price = document.getElementById('product-price').value;
+                const minQuantity = document.getElementById('product-min-quantity').value;
+                
+                if (!title || !description || !price || !minQuantity) {
+                    alert('يرجى ملء جميع الحقول المطلوبة');
+                    return;
+                }
+                
+                // إنشاء عنصر المنتج
+                const productElement = document.createElement('div');
+                productElement.className = 'product-card';
+                
+                // تحديد صورة المنتج
+                let productImageSrc = '../imag/default-product.jpg';
+                if (imagePreview.querySelector('img')) {
+                    productImageSrc = imagePreview.querySelector('img').src;
+                }
+                
+                productElement.innerHTML = `
+                    <div class="product-image">
+                        <img src="${productImageSrc}" alt="${title}">
+                        <div class="product-actions">
+                            <button class="edit-product"><i class="fas fa-edit"></i></button>
+                            <button class="delete-product"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <span class="product-status active">نشط</span>
+                    </div>
+                    <div class="product-details">
+                        <h4>${title}</h4>
+                        <p class="product-description">${description}</p>
+                        <div class="product-meta">
+                            <span class="product-price">${price} دج</span>
+                            <span class="product-min-quantity">أقل كمية: ${minQuantity}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // إضافة المنتج إلى القائمة
+                productsList.appendChild(productElement);
+                
+                // إعادة تعيين النموذج وإخفائه
+                document.getElementById('product-title').value = '';
+                document.getElementById('product-description').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-min-quantity').value = '';
+                imagePreview.innerHTML = '<i class="fas fa-image"></i><span>اختر صورة</span>';
+                addProductForm.style.display = 'none';
+                
+                // إضافة حدث حذف المنتج
+                const deleteBtn = productElement.querySelector('.delete-product');
+                deleteBtn.addEventListener('click', function() {
+                    if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+                        productElement.remove();
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="dashboard-wrapper">
+        <!-- القائمة الجانبية -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/imag/أنــامل (1) (1).png" alt="شعار المتجر" class="logo">
+                <h3>لوحة التحكم</h3>
+            </div>
+            <div class="seller-profile">
+                <div class="seller-avatar">
+                    <img src="/imag/wail.png" alt="صورة البائع">
+                </div>
+                <div class="seller-info">
+                    <h4 class="seller-name">هبة</h4>
+                    <p class="seller-status"><span class="status-dot active"></span> متصل</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#dashboard" class="active"><i class="fas fa-home"></i> الرئيسية</a></li>
+                    <li><a href="#profile"><i class="fas fa-user"></i> الملف الشخصي</a></li>
+                    <li>
+                        <a href="#products" class="has-dropdown"><i class="fas fa-box"></i> المنتجات</a>
+                        <ul class="submenu">
+                            <li><a href="#add-product">إضافة منتج</a></li>
+                            <li><a href="#manage-products">إدارة المنتجات</a></li>
+                            <li><a href="#product-categories">التصنيفات</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#orders"><i class="fas fa-shopping-cart"></i> الطلبات <span class="badge">5</span></a></li>
+                    <li><a href="#messages"><i class="fas fa-envelope"></i> الرسائل <span class="badge">3</span></a></li>
+                    <li><a href="#statistics"><i class="fas fa-chart-bar"></i> الإحصائيات</a></li>
+                    <li><a href="#settings"><i class="fas fa-cog"></i> الإعدادات</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#help"><i class="fas fa-question-circle"></i> المساعدة</a>
+                <a href="../تسجيل الدخول/Untitled-1.html"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+            </div>
+        </aside>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <button id="sidebar-toggle" class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <input type="text" placeholder="بحث...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge">3</span>
+                        </button>
+                        <div class="notification-dropdown">
+                            <div class="notification-header">
+                                <h5>الإشعارات</h5>
+                                <a href="#">تعيين الكل كمقروء</a>
+                            </div>
+                            <ul class="notification-list">
+                                <li class="unread">
+                                    <div class="notification-icon"><i class="fas fa-shopping-cart"></i></div>
+                                    <div class="notification-content">
+                                        <p>لديك طلب جديد بقيمة 1200 دج</p>
+                                        <span class="time">منذ 5 دقائق</span>
+                                    </div>
+                                </li>
+                                <li class="unread">
+                                    <div class="notification-icon"><i class="fas fa-envelope"></i></div>
+                                    <div class="notification-content">
+                                        <p>رسالة جديدة من العميل سمير</p>
+                                        <span class="time">منذ 30 دقيقة</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="notification-icon"><i class="fas fa-star"></i></div>
+                                    <div class="notification-content">
+                                        <p>تقييم جديد على منتج زيت الزيتون</p>
+                                        <span class="time">منذ 2 ساعة</span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="notification-footer">
+                                <a href="#">عرض كل الإشعارات</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- لوحة القيادة الرئيسية -->
+            <section id="dashboard" class="dashboard-section">
+                <div class="section-header">
+                    <h2>لوحة القيادة</h2>
+                    <div class="date-filter">
+                        <select>
+                            <option>اليوم</option>
+                            <option>هذا الأسبوع</option>
+                            <option selected>هذا الشهر</option>
+                            <option>هذا العام</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stats-cards">
+                    <div class="stat-card sales">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <h3>المبيعات</h3>
+                                <h2>12,500 <span>دج</span></h2>
+                                <p><i class="fas fa-arrow-up"></i> 12% منذ الشهر الماضي</p>
+                            </div>
+                            <div class="stat-card-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-chart" id="sales-chart"></div>
+                    </div>
+
+                    <div class="stat-card orders">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <h3>الطلبات</h3>
+                                <h2>48</h2>
+                                <p><i class="fas fa-arrow-up"></i> 8% منذ الشهر الماضي</p>
+                            </div>
+                            <div class="stat-card-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-chart" id="orders-chart"></div>
+                    </div>
+
+                    <div class="stat-card customers">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <h3>العملاء</h3>
+                                <h2>32</h2>
+                                <p><i class="fas fa-arrow-up"></i> 15% منذ الشهر الماضي</p>
+                            </div>
+                            <div class="stat-card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-chart" id="customers-chart"></div>
+                    </div>
+
+                    <div class="stat-card products">
+                        <div class="stat-card-content">
+                            <div class="stat-card-info">
+                                <h3>المنتجات</h3>
+                                <h2>15</h2>
+                                <p><i class="fas fa-arrow-up"></i> 5% منذ الشهر الماضي</p>
+                            </div>
+                            <div class="stat-card-icon">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-chart" id="products-chart"></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-widgets">
+                    <div class="widget recent-orders">
+                        <div class="widget-header">
+                            <h3>أحدث الطلبات</h3>
+                            <a href="#orders" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="widget-content">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الطلب</th>
+                                        <th>العميل</th>
+                                        <th>المنتج</th>
+                                        <th>السعر</th>
+                                        <th>الحالة</th>
+                                        <th>التاريخ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#ORD-5214</td>
+                                        <td>أحمد محمد</td>
+                                        <td>زيت زيتون (2 لتر)</td>
+                                        <td>1200 دج</td>
+                                        <td><span class="status pending">قيد المعالجة</span></td>
+                                        <td>15 يوليو 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-5213</td>
+                                        <td>سمير علي</td>
+                                        <td>عسل طبيعي (1 كغ)</td>
+                                        <td>2500 دج</td>
+                                        <td><span class="status shipped">تم الشحن</span></td>
+                                        <td>14 يوليو 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-5212</td>
+                                        <td>ليلى أحمد</td>
+                                        <td>جبن تقليدي (500 غ)</td>
+                                        <td>800 دج</td>
+                                        <td><span class="status delivered">تم التسليم</span></td>
+                                        <td>13 يوليو 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-5211</td>
+                                        <td>كريم محمود</td>
+                                        <td>تمر (3 كغ)</td>
+                                        <td>1500 دج</td>
+                                        <td><span class="status cancelled">ملغي</span></td>
+                                        <td>12 يوليو 2023</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="widget top-products">
+                        <div class="widget-header">
+                            <h3>أفضل المنتجات مبيعاً</h3>
+                            <a href="#products" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="widget-content">
+                            <div class="product-chart" id="top-products-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم الملف الشخصي -->
+            <section id="profile" class="dashboard-section d-none">
+                <div class="section-header">
+                    <h2>الملف الشخصي</h2>
+                    <button class="btn btn-primary"><i class="fas fa-edit"></i> تعديل الملف</button>
+                </div>
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="/imag/wail.png" alt="صورة البائع">
+                            <button class="change-avatar"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div class="profile-details">
+                            <h3>هبة</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> ولاية الطارف, الجزائر</p>
+                            <p><i class="fas fa-envelope"></i> wailabderrahmanechaib@gmail.com</p>
+                            <p><i class="fas fa-phone"></i> +213673437798</p>
+                        </div>
+                    </div>
+                    <div class="profile-body">
+                        <div class="profile-section">
+                            <h4>المعلومات الشخصية</h4>
+                            <div class="profile-info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">الاسم الكامل</span>
+                                    <span class="info-value">هبة شايب</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">رقم التعريف الوطني</span>
+                                    <span class="info-value">29XXXXXXXXXX</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">البريد الإلكتروني</span>
+                                    <span class="info-value">wailabderrahmanechaib@gmail.com</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">رقم الهاتف</span>
+                                    <span class="info-value">+213673437798</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">الولاية</span>
+                                    <span class="info-value">الطارف</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">البلدية</span>
+                                    <span class="info-value">بوثلجة</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-section">
+                            <h4>أنواع المنتجات</h4>
+                            <div class="product-types">
+                                <span class="product-type">زيت الزيتون</span>
+                                <span class="product-type">العسل</span>
+                                <span class="product-type">الأجبان التقليدية</span>
+                                <span class="product-type">التمور</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم الإحصائيات -->
+            <section id="statistics" class="dashboard-section d-none">
+                <div class="section-header">
+                    <h2>الإحصائيات</h2>
+                </div>
+                <div class="statistics-container">
+                    <div class="statistics-filters">
+                        <div class="date-range">
+                            <label>الفترة الزمنية:</label>
+                            <select id="stats-period">
+                                <option value="week">آخر أسبوع</option>
+                                <option value="month" selected>آخر شهر</option>
+                                <option value="quarter">آخر 3 أشهر</option>
+                                <option value="year">آخر سنة</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="statistics-grid">
+                        <div class="stat-widget sales-chart">
+                            <div class="widget-header">
+                                <h3>تطور المبيعات</h3>
+                            </div>
+                            <div class="widget-content">
+                                <div id="sales-trend-chart" class="chart-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-widget products-chart">
+                            <div class="widget-header">
+                                <h3>المنتجات الأكثر مبيعاً</h3>
+                            </div>
+                            <div class="widget-content">
+                                <div id="top-products-chart" class="chart-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-widget customers-chart">
+                            <div class="widget-header">
+                                <h3>العملاء الجدد</h3>
+                            </div>
+                            <div class="widget-content">
+                                <div id="new-customers-chart" class="chart-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-widget revenue-chart">
+                            <div class="widget-header">
+                                <h3>الإيرادات حسب التصنيف</h3>
+                            </div>
+                            <div class="widget-content">
+                                <div id="revenue-by-category-chart" class="chart-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم الإعدادات -->
+            <section id="settings" class="dashboard-section d-none">
+                <div class="section-header">
+                    <h2>الإعدادات</h2>
+                </div>
+                <div class="settings-container">
+                    <div class="settings-sidebar">
+                        <ul class="settings-nav">
+                            <li class="active" data-target="account-settings">إعدادات الحساب</li>
+                            <li data-target="store-settings">إعدادات المتجر</li>
+                            <li data-target="notification-settings">إعدادات الإشعارات</li>
+                            <li data-target="payment-settings">إعدادات الدفع</li>
+                            <li data-target="security-settings">الأمان والخصوصية</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <div id="account-settings" class="settings-panel active">
+                            <h3>إعدادات الحساب</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>الاسم الكامل</label>
+                                    <input type="text" value="هبة شايب" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>البريد الإلكتروني</label>
+                                    <input type="email" value="wailabderrahmanechaib@gmail.com" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>رقم الهاتف</label>
+                                    <input type="tel" value="+213673437798" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>العنوان</label>
+                                    <textarea class="form-control">ولاية الطارف الجزائر</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </form>
+                        </div>
+                        
+                        <div id="store-settings" class="settings-panel">
+                            <h3>إعدادات المتجر</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>اسم المتجر</label>
+                                    <input type="text" value="منتجات ريفية أصلية" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>وصف المتجر</label>
+                                    <textarea class="form-control">متجر متخصص في المنتجات الريفية الجزائرية الأصلية والطبيعية 100%</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>شعار المتجر</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="store-logo">
+                                        <label for="store-logo" class="btn btn-outline-primary">تغيير الشعار</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>ساعات العمل</label>
+                                    <input type="text" value="السبت - الخميس: 9:00 - 18:00" class="form-control">
+                                </div>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </form>
+                        </div>
+                        
+                        <div id="notification-settings" class="settings-panel">
+                            <h3>إعدادات الإشعارات</h3>
+                            <form class="settings-form">
+                                <div class="form-check">
+                                    <input type="checkbox" id="order-notifications" class="form-check-input" checked>
+                                    <label for="order-notifications" class="form-check-label">إشعارات الطلبات الجديدة</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="message-notifications" class="form-check-input" checked>
+                                    <label for="message-notifications" class="form-check-label">إشعارات الرسائل الجديدة</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="review-notifications" class="form-check-input" checked>
+                                    <label for="review-notifications" class="form-check-label">إشعارات التقييمات الجديدة</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="promo-notifications" class="form-check-input">
+                                    <label for="promo-notifications" class="form-check-label">إشعارات العروض والتحديثات</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </form>
+                        </div>
+                        
+                        <div id="payment-settings" class="settings-panel">
+                            <h3>إعدادات الدفع</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>طرق الدفع المقبولة</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="cash-payment" class="form-check-input" checked>
+                                        <label for="cash-payment" class="form-check-label">الدفع عند الاستلام</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="bank-payment" class="form-check-input" checked>
+                                        <label for="bank-payment" class="form-check-label">التحويل البنكي</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="card-payment" class="form-check-input">
+                                        <label for="card-payment" class="form-check-label">بطاقة الائتمان</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>معلومات الحساب البنكي</label>
+                                    <input type="text" placeholder="اسم البنك" class="form-control mb-2">
+                                    <input type="text" placeholder="رقم الحساب" class="form-control mb-2">
+                                    <input type="text" placeholder="اسم صاحب الحساب" class="form-control">
+                                </div>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </form>
+                        </div>
+                        
+                        <div id="security-settings" class="settings-panel">
+                            <h3>الأمان والخصوصية</h3>
+                            <form class="settings-form">
+                                <div class="form-group">
+                                    <label>تغيير كلمة المرور</label>
+                                    <input type="password" placeholder="كلمة المرور الحالية" class="form-control mb-2">
+                                    <input type="password" placeholder="كلمة المرور الجديدة" class="form-control mb-2">
+                                    <input type="password" placeholder="تأكيد كلمة المرور الجديدة" class="form-control">
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="two-factor" class="form-check-input">
+                                    <label for="two-factor" class="form-check-label">تفعيل المصادقة الثنائية</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم إدارة المنتجات -->
+            <section id="products" class="dashboard-section d-none">
+                <div class="section-header">
+                    <h2>إدارة المنتجات</h2>
+                    <button id="add-product-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> إضافة منتج جديد
+                    </button>
+                </div>
+                
+                <!-- نموذج إضافة منتج جديد -->
+                <div id="add-product-form" class="product-form-overlay">
+                    <div class="product-form-container">
+                        <div class="product-form-header">
+                            <h3>إضافة منتج جديد</h3>
+                            <button id="close-form-btn" class="close-btn"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="product-form-body">
+                            <div class="form-group">
+                                <label for="product-title">عنوان المنتج</label>
+                                <input type="text" id="product-title" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-description">وصف المنتج</label>
+                                <textarea id="product-description" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-price">سعر المنتج (دج)</label>
+                                <input type="number" id="product-price" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-min-quantity">أقل كمية للطلب</label>
+                                <input type="number" id="product-min-quantity" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-category">تصنيف المنتج</label>
+                                <select id="product-category" class="form-control" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product-image">صورة المنتج</label>
+                                <div class="image-upload-container">
+                                    <input type="file" id="product-image" class="form-control-file" accept="image/*">
+                                    <div id="image-preview" class="image-preview">
+                                        <i class="fas fa-image"></i>
+                                        <span>اختر صورة</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-form-footer">
+                            <button id="cancel-product-btn" class="btn btn-secondary">إلغاء</button>
+                            <button id="save-product-btn" class="btn btn-primary">حفظ المنتج</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="products-filters">
+                    <div class="search-filter">
+                        <input type="text" placeholder="بحث عن منتج...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="category-filter">
+                        <select>
+                            <option value="">جميع التصنيفات</option>
+                            <option value="oil">زيوت</option>
+                            <option value="honey">عسل</option>
+                            <option value="dairy">منتجات ألبان</option>
+                            <option value="dates">تمور</option>
+                        </select>
+                    </div>
+                    <div class="status-filter">
+                        <select>
+                            <option value="">جميع الحالات</option>
+                            <option value="active">نشط</option>
+                            <option value="inactive">غير نشط</option>
+                            <option value="out-of-stock">نفذت الكمية</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="../imag/Oliveoli.jpg" alt="زيت زيتون">
+                            <div class="product-actions">
+                                <button class="edit-product"><i class="fas fa-edit"></i></button>
+                                <button class="delete-product"><i class="fas fa-trash"></i></button>
+                            </div>
+                            <span class="product-status active">نشط</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>زيت زيتون عضوي</h4>
+                            <p class="product-category"><i class="fas fa-tag"></i> زيوت</p>
+                            <div class="product-meta">
+                                <span class="product-price">1200 دج</span>
+                                <span class="product-stock"><i class="fas fa-cubes"></i> 25 وحدة</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="../imag/honey.jpg" alt="عسل طبيعي">
+                            <div class="product-actions">
+                                <button class="edit-product"><i class="fas fa-edit"></i></button>
+                                <button class="delete-product"><i class="fas fa-trash"></i></button>
+                            </div>
+                            <span class="product-status active">نشط</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>عسل جبلي طبيعي</h4>
+                            <p class="product-category"><i class="fas fa-tag"></i> عسل</p>
+                            <div class="product-meta">
+                                <span class="product-price">2500 دج</span>
+                                <span class="product-stock"><i class="fas fa-cubes"></i> 10 وحدة</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="../imag/butter.jpeg" alt="زبدة بلدية">
+                            <div class="product-actions">
+                                <button class="edit-product"><i class="fas fa-edit"></i></button>
+                                <button class="delete-product"><i class="fas fa-trash"></i></button>
+                            </div>
+                            <span class="product-status out-of-stock">نفذت الكمية</span>
+                        </div>
+                        <div class="product-details">
+                            <h4>زبدة بلدية طازجة</h4>
+                            <p class="product-category"><i class="fas fa-tag"></i> منتجات ألبان</p>
+                            <div class="product-meta">
+                                <span class="product-price">800 دج</span>
+                                <span class="product-stock"><i class="fas fa-cubes"></i> 0 وحدة</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم الرسائل -->
+            <section id="messages" class="dashboard-section d-none">
+                <div class="section-header">
+                    <h2>الرسائل</h2>
+                </div>
+                <div class="messages-container">
+                    <div class="messages-sidebar">
+                        <div class="messages-search">
+                            <input type="text" placeholder="بحث...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="messages-list">
+                            <div class="message-item active unread">
+                                <div class="message-avatar">
+                                    <img src="/imag/wail.png" alt="صورة المستخدم">
+                                    <span class="status-dot online"></span>
+                                </div>
+                                <div class="message-preview">
+                                    <h4>عبير</h4>
+                                    <p>هل زيت الزيتون متوفر حالياً؟</p>
+                                    <span class="message-time">10:30</span>
+                                </div>
+                            </div>
+                            <div class="message-item unread">
+                                <div class="message-avatar">
+                                    <img src="/imag/wail.png" alt="صورة المستخدم">
+                                    <span class="status-dot offline"></span>
+                                </div>
+                                <div class="message-preview">
+                                    <h4>سارة</h4>
+                                    <p>أريد معرفة سعر الشحن إلى ولاية وهران</p>
+                                    <span class="message-time">أمس</span>
+                                </div>
+                            </div>
+                            <div class="message-item">
+                                <div class="message-avatar">
+                                    <img src="/imag/wail.png" alt="صورة المستخدم">
+                                    <span class="status-dot online"></span>
+                                </div>
+                                <div class="message-preview">
+                                    <h4>ملاك</h4>
+                                    <p>شكراً جزيلاً، وصلني الطلب بحالة ممتازة</p>
+                                    <span class="message-time">الأمس</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="messages-content">
+                        <div class="messages-header">
+                            <div class="contact-info">
+                                <img src="/imag/wail.png" alt="صورة المستخدم">
+                                <div>
+                                    <h4>عبير</h4>
+                                    <p><span class="status-dot online"></span> متصل</p>
+                                </div>
+                            </div>
+                            <div class="messages-actions">
+                                <button><i class="fas fa-phone"></i></button>
+                                <button><i class="fas fa-video"></i></button>
+                                <button><i class="fas fa-ellipsis-v"></i></button>
+                            </div>
+                        </div>
+                        <div class="messages-body">
+                            <div class="message-date">اليوم</div>
+                            <div class="message received">
+                                <div class="message-content">
+                                    <p>السلام عليكم، هل زيت الزيتون متوفر حالياً؟</p>
+                                    <span class="message-time">10:30</span>
+                                </div>
+                            </div>
+                            <div class="message sent">
+                                <div class="message-content">
+                                    <p>وعليكم السلام، نعم متوفر بعبوات 1 لتر و 2 لتر و 5 لتر</p>
+                                    <span class="message-time">10:32</span>
+                                </div>
+                            </div>
+                            <div class="message received">
+                                <div class="message-content">
+                                    <p>ما هو سعر عبوة 2 لتر؟</p>
+                                    <span class="message-time">10:33</span>
+                                </div>
+                            </div>
+                            <div class="message sent">
+                                <div class="message-content">
+                                    <p>سعر عبوة 2 لتر هو 1200 دج</p>
+                                    <span class="message-time">10:35</span>
+                                </div>
+                            </div>
+                            <div class="message received">
+                                <div class="message-content">
+                                    <p>هل يمكنني طلب 3 عبوات؟ وكم تكلفة الشحن إلى العاصمة؟</p>
+                                    <span class="message-time">10:36</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="messages-footer">
+                            <button class="attach-btn"><i class="fas fa-paperclip"></i></button>
+                            <input type="text" placeholder="اكتب رسالتك هنا...">
+                            <button class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal إضافة منتج جديد -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">إضافة منتج جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.js"></script>
+                    <script src="Untitled-1.js"></script>
+                    <script src="product-form.js"></script>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productName" class="form-label">اسم المنتج</label>
+                                <input type="text" class="form-control" id="productName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>
+                                    <option value="fruits">فواكه</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="productPrice" class="form-label">سعر المنتج</label>
+                                <input type="text" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">التصنيف</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>اختر التصنيف</option>
+                                    <option value="oil">زيوت</option>
+                                    <option value="honey">عسل</option>
+                                    <option value="dairy">منتجات ألبان</option>
+                                    <option value="dates">تمور</option>
+                                    <option value="herbs">أعشاب وتوابل</option>

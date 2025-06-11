@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل بائع جديد - المنتجات الريفية الجزائرية</title>
+    <!-- تضمين مكتبات Bootstrap RTL و FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- تضمين مكتبة Select2 للقوائم المنسدلة المتقدمة -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .registration-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-header img {
+            max-height: 80px;
+            margin-bottom: 15px;
+        }
+        .form-header h2 {
+            color: #28a745;
+            font-weight: 600;
+        }
+        .form-header p {
+            color: #6c757d;
+        }
+        .form-section {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            color: #28a745;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .custom-file-upload {
+            border: 1px dashed #28a745;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .custom-file-upload i {
+            font-size: 24px;
+            color: #28a745;
+            margin-bottom: 5px;
+        }
+        .btn-register {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 10px 30px;
+            font-weight: 600;
+        }
+        .btn-register:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .input-group-text {
+            background-color: #f8f9fa;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 38px;
+            border: 1px solid #ced4da;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 38px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px;
+        }
+        .text-success {
+            color: #28a745 !important;
+        }
+        .error-text {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container registration-container">
+        <div class="form-header">
+            <img src="/api/placeholder/200/80" alt="شعار المنتجات الريفية الجزائرية" class="img-fluid">
+            <h2>تسجيل بائع جديد</h2>
+            <p>انضم إلينا وقم بتسويق منتجاتك الريفية إلى جميع أنحاء الجزائر</p>
+        </div>
+
+        <form id="sellerRegistrationForm" method="POST" action="process_registration.php" enctype="multipart/form-data">
+            
+            <!-- معلومات شخصية -->
+            <div class="form-section">
+                <h4 class="section-title">المعلومات الشخصية</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="fullName" class="form-label">الاسم الكامل <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                        <div class="invalid-feedback">يرجى إدخال الاسم الكامل</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="nin" class="form-label">رقم التعريف الوطني (NIN) <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nin" name="nin" required>
+                        <div class="invalid-feedback" id="nin-error">يرجى إدخال رقم تعريف وطني صحيح</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات الاتصال -->
+            <div class="form-section">
+                <h4 class="section-title">معلومات الاتصال</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">البريد الإلكتروني <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="invalid-feedback">يرجى إدخال بريد إلكتروني صحيح</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">رقم الهاتف <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">+213</span>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="invalid-feedback" id="phone-error">يرجى إدخال رقم هاتف صحيح</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات الموقع -->
+            <div class="form-section">
+                <h4 class="section-title">المعلومات الجغرافية</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="wilaya" class="form-label">الولاية <span class="text-danger">*</span></label>
+                        <select class="form-select select2" id="wilaya" name="wilaya" required>
+                            <option value="" selected disabled>اختر الولاية</option>
+                            <!-- سيتم ملء هذه القائمة بالجافاسكريبت -->
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="commune" class="form-label">البلدية <span class="text-danger">*</span></label>
+                        <select class="form-select select2" id="commune" name="commune" required disabled>
+                            <option value="" selected disabled>اختر البلدية</option>
+                            <!-- سيتم ملء هذه القائمة بالجافاسكريبت بناء على اختيار الولاية -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات المنتجات -->
+            <div class="form-section">
+                <h4 class="section-title">معلومات النشاط والمنتجات</h4>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="productTypes" class="form-label">أنواع المنتجات التي تقدمها</label>
+                        <select class="form-select select2" id="productTypes" name="productTypes[]" multiple>
+                            <option value="honey">العسل ومنتجات النحل</option>
+                            <option value="oil">الزيوت الطبيعية (زيت الزيتون، أركان...)</option>
+                            <option value="dairy">منتجات الألبان</option>
+                            <option value="fruits">الفواكه الطازجة والمجففة</option>
+                            <option value="vegetables">الخضروات</option>
+                            <option value="herbs">الأعشاب والتوابل</option>
+                            <option value="crafts">الحرف اليدوية والصناعات التقليدية</option>
+                            <option value="cereals">الحبوب والبقوليات</option>
+                            <option value="dates">التمور ومشتقاتها</option>
+                            <option value="other">منتجات أخرى</option>
+                        </select>
+                        <small class="form-text text-muted">يمكنك اختيار أكثر من منتج</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات الحساب -->
+            <div class="form-section">
+                <h4 class="section-title">معلومات الحساب</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">كلمة المرور <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <span class="password-toggle" onclick="togglePassword('password')">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted">يجب أن تحتوي على 8 أحرف على الأقل مع حرف كبير ورقم ورمز خاص</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="confirmPassword" class="form-label">تأكيد كلمة المرور <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            <span class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="invalid-feedback">كلمات المرور غير متطابقة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تحميل الوثائق -->
+            <div class="form-section">
+                <h4 class="section-title">الوثائق (اختياري)</h4>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="idCard" class="form-label">صورة البطاقة الوطنية</label>
+                        <input type="file" class="form-control" id="idCard" name="idCard" accept="image/*" style="display: none;">
+                        <div class="custom-file-upload" onclick="document.getElementById('idCard').click()">
+                            <i class="fas fa-upload d-block"></i>
+                            <span id="idCardLabel">اضغط هنا لتحميل صورة البطاقة الوطنية</span>
+                        </div>
+                        <small class="form-text text-muted">الملفات المقبولة: JPG, PNG, PDF بحجم أقصى 2MB</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشروط والأحكام -->
+            <div class="form-section">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="termsAgreement" name="termsAgreement" required>
+                    <label class="form-check-label" for="termsAgreement">
+                        أوافق على <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">الشروط والأحكام</a> وسياسة الخصوصية
+                    </label>
+                    <div class="invalid-feedback">يجب الموافقة على الشروط والأحكام للمتابعة</div>
+                </div>
+            </div>
+
+            <!-- زر التسجيل -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success btn-register btn-lg">
+                    <i class="fas fa-user-plus me-2"></i> تسجيل كبائع
+                </button>
+            </div>
+        </form>
+
+        <!-- في نهاية النموذج، أضف: -->
+        <div class="mt-4 text-center">
+            <p>لديك حساب بائع بالفعل؟ <a href="seller-login.html" class="text-primary">تسجيل الدخول</a></p>
+            <a href="../تسجيل الزبون/Untitled-1.html" class="text-muted">تسجيل كزبون</a>
+            <span class="mx-2">|</span>
+            <a href="../improved_html3.html" class="text-muted">العودة للرئيسية</a>
+        </div>
+    </div>
+
+    <!-- Modal للشروط والأحكام -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">الشروط والأحكام</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>شروط استخدام منصة المنتجات الريفية الجزائرية للبائعين</h5>
+                    <p>مرحبًا بك في منصتنا المخصصة لتسويق المنتجات الريفية الجزائرية. يرجى قراءة الشروط والأحكام التالية بعناية قبل التسجيل والمتابعة:</p>
+
+                    <h6>1. الأهلية</h6>
+                    <p>- يجب أن تكون شخصًا بالغًا فوق 18 عامًا.</p>
+                    <p>- يجب أن تكون مقيمًا في الجزائر.</p>
+                    <p>- يجب أن تمتلك منتجات ريفية مصنعة أو منتجة في الجزائر.</p>
+
+                    <h6>2. المنتجات المسموح بها</h6>
+                    <p>- منتجات غذائية طبيعية (عسل، زيوت، ألبان، فواكه، خضر...)</p>
+                    <p>- منتجات الحرف اليدوية والصناعات التقليدية الجزائرية</p>
+                    <p>- منتجات أخرى مصنعة محليًا بشكل تقليدي</p>
+
+                    <h6>3. حقوق وواجبات البائع</h6>
+                    <p>- الالتزام بتقديم معلومات صحيحة عن المنتجات</p>
+                    <p>- الالتزام بأسعار عادلة ومعقولة</p>
+                    <p>- تسليم المنتجات بالجودة المعلن عنها</p>
+                    <p>- الرد على استفسارات العملاء خلال 24 ساعة</p>
+
+                    <h6>4. العمولات والرسوم</h6>
+                    <p>- تحتفظ المنصة بنسبة 5% من قيمة كل عملية بيع</p>
+                    <p>- يتم دفع مستحقات البائع خلال 7 أيام من تاريخ تأكيد استلام المنتج</p>
+
+                    <h6>5. الخصوصية</h6>
+                    <p>- لن نشارك معلوماتك الشخصية مع أي طرف ثالث دون موافقتك</p>
+                    <p>- نحتفظ بحق استخدام صور منتجاتك لأغراض الترويج للمنصة</p>
+
+                    <h6>6. إنهاء الخدمة</h6>
+                    <p>- نحتفظ بالحق في تعليق أو إنهاء حسابك في حالة مخالفة الشروط والأحكام</p>
+                    <p>- يمكنك إغلاق حسابك في أي وقت مع تسوية جميع المعاملات الجارية</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تضمين JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    
+    <script>
+        // قائمة الولايات الجزائرية
+        const wilayas = [
+            "01 - أدرار", "02 - الشلف", "03 - الأغواط", "04 - أم البواقي", "05 - باتنة",
+            "06 - بجاية", "07 - بسكرة", "08 - بشار", "09 - البليدة", "10 - البويرة",
+            "11 - تمنراست", "12 - تبسة", "13 - تلمسان", "14 - تيارت", "15 - تيزي وزو",
+            "16 - الجزائر", "17 - الجلفة", "18 - جيجل", "19 - سطيف", "20 - سعيدة",
+            "21 - سكيكدة", "22 - سيدي بلعباس", "23 - عنابة", "24 - قالمة", "25 - قسنطينة",
+            "26 - المدية", "27 - مستغانم", "28 - المسيلة", "29 - معسكر", "30 - ورقلة",
+            "31 - وهران", "32 - البيض", "33 - إليزي", "34 - برج بوعريريج", "35 - بومرداس",
+            "36 - الطارف", "37 - تندوف", "38 - تيسمسيلت", "39 - الوادي", "40 - خنشلة",
+            "41 - سوق أهراس", "42 - تيبازة", "43 - ميلة", "44 - عين الدفلى", "45 - النعامة",
+            "46 - عين تموشنت", "47 - غرداية", "48 - غليزان", "49 - تيميمون", "50 - برج باجي مختار",
+            "51 - أولاد جلال", "52 - بني عباس", "53 - عين صالح", "54 - عين قزام", "55 - توقرت",
+            "56 - جانت", "57 - المغير", "58 - المنيعة"
+        ];
+
+        // قواميس البلديات حسب الولاية (مثال مبسط)
+        const communes = {
+  "01 - أدرار": ["أدرار", "تيميمون", "زاوية كنتة", "رقان", "أولف", "تسابيت", "أقبلي", "تامنطيت", "فنوغيل", "تيمقتن", "أولاد أحمد تيمي", "برج باجي مختار", "أولاد سعيد", "سبع", "تامست", "تطلمين"],
+  "02 - الشلف": ["الشلف", "تنس", "بوقادير", "أولاد فارس", "أولاد بن عبد القادر", "أولاد عباس", "أولاد يعيش", "أولاد سيدي عبد القادر", "أولاد سيدي الميهوب", "أولاد سيدي الميهوب", "أولاد سيدي الميهوب", "أولاد سيدي الميهوب", "أولاد سيدي الميهوب", "أولاد سيدي الميهوب", "أولاد سيدي الميهوب", "أولاد سيدي الميهوب"],
+  "03 - الأغواط": ["الأغواط", "أفلو", "حاسي الرمل", "قصر الحيران", "عين ماضي", "بن ناصر بن شهرة", "سيدي مخلوف", "حاسي الدلاعة", "حاسي الدلاعة", "حاسي الدلاعة", "حاسي الدلاعة", "حاسي الدلاعة", "حاسي الدلاعة", "حاسي الدلاعة", "حاسي الدلاعة", "حاسي الدلاعة"],
+  "04 - أم البواقي": ["أم البواقي", "عين البيضاء", "عين مليلة", "سيقوس", "فكرينة", "الضلعة", "الزرق", "الزرق", "الزرق", "الزرق", "الزرق", "الزرق", "الزرق", "الزرق", "الزرق"],
+  "05 - باتنة": ["باتنة", "أريس", "مروانة", "عين التوتة", "نقاوس", "تازولت", "ثنية العابد", "بوزينة", "بريكة", "سريانة", "سريانة", "سريانة", "سريانة", "سريانة", "سريانة", "سريانة"],
+  "06 - بجاية": ["بجاية", "أميزور", "تازمالت", "خراطة", "صدوق", "سيدي عيش", "أقبو", "أوقاس", "أوقاس", "أوقاس", "أوقاس", "أوقاس", "أوقاس", "أوقاس", "أوقاس", "أوقاس", "أوقاس"],
+  "07 - بسكرة": ["بسكرة", "طولقة", "أورلال", "سيدي عقبة", "جمورة", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي", "زريبة الوادي"],
+  "08 - بشار": ["بشار", "بني ونيف", "القنادسة", "العبادلة", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت", "تاغيت"],
+  "09 - البليدة": ["البليدة", "بوفاريك", "بني مراد", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو", "بني تامو"],
+  "10 - البويرة": ["البويرة", "سور الغزلان", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة", "أمشدالة"],
+  "11 - تمنراست": ["تمنراست", "عين صالح", "عين قزام", "تازروك", "تازروك", "إينغر", "إين أمقل", "تازروك", "تازروك", "تازروك", "تازروك", "تازروك", "تازروك", "تازروك", "تازروك"],
+  "12 - تبسة": ["تبسة", "الونزة", "الشريعة", "بئر العاتر", "العوينات", "بئر مقدم", "بكارية", "الحمامات", "الماء الأبيض", "بئر الذهب", "العقلة", "بئر العاتر", "بئر مقدم", "بئر العاتر", "بئر مقدم"],
+  "13 - تلمسان": ["تلمسان", "مغنية", "الغزوات", "صبري", "الرمشي", "عين تالوت", "الندرومة", "سبدو", "الحناية", "بني بوسعيد", "بني سنوس", "بني وارسوس", "بني مستار", "بني وارسوس", "بني مستار"],
+  "14 - تيارت": ["تيارت", "حمادية", "فرندة", "مهدية", "قصر الشلالة", "مدروسة", "عين الذهب", "عين كرمس", "عين زاريت", "عين الحديد", "عين دزاريت", "عين دزاريت", "عين دزاريت", "عين دزاريت", "عين دزاريت", "عين دزاريت"],
+  "15 - تيزي وزو": ["تيزي وزو", "ذراع بن خدة", "أزفون", "أقني قغران", "بني دوالة", "بني يني", "بوزقان", "إيفرحونن", "إيلولة أمالو", "إيفرحونن", "إيفرحونن", "إيفرحونن", "إيفرحونن", "إيفرحونن", "إيفرحونن"],
+  "16 - الجزائر": ["باب الوادي", "القصبة", "بولوغين", "وادي قريش", "بئر مراد رايس", "المحمدية", "الأبيار", "بوزريعة", "بئر خادم", "الحمامات", "رايس حميدو", "الدار البيضاء", "باش جراح", "حسين داي", "براقي", "الحراش", "القبة", "بوروبة", "وادي السمار", "برج الكيفان"],
+  "17 - الجلفة": ["الجلفة", "حاسي بحبح", "عين وسارة", "دار الشيوخ", "البيرين", "مسعد", "الشارف", "سيدي لعجال", "فيض البطمة", "سد رحال"],
+  "18 - جيجل": ["جيجل", "الطاهير", "الميلية", "الشقفة", "تاكسنة", "العنصر", "بني بلعيد", "زيامة منصورية", "بوراوي بلهادف", "العوانة"],
+  "19 - سطيف": ["سطيف", "عين أرنات", "عين عباسة", "عين ولمان", "عين أزال", "عين الكبيرة", "عموشة", "بابور", "بني عزيز", "بني ورتيلان", "بوعنداس", "بوقاعة", "بوسلام", "العلمة", "قلال", "حمام السخنة", "حمام قرقور", "قنزات", "ماوكلان", "أولاد صابر"],
+  "20 - سعيدة": ["سعيدة", "يوب", "عين الحجر", "سيدي بوبكر", "مولاي العربي", "الحساسنة", "سيدي أحمد", "أولاد خالد"],
+  "21 - سكيكدة": ["سكيكدة", "الحروش", "رمضان جمال", "عزابة", "أم الطوب", "تمالوس", "بن عزوز", "أولاد حبابة", "زردازة", "عين قشرة"],
+  "22 - سيدي بلعباس": ["سيدي بلعباس", "تلموني", "سفيزف", "رجم دموش", "مرحوم", "سيدي علي بن يوب", "تلاغ", "بن باديس", "مقلع بن عامر"],
+  "23 - عنابة": ["عنابة", "البوني", "سرايدي", "برحال", "الحجار", "عين الباردة", "الشرفة", "وادي العنب", "التريعات", "العلمة", "عين الباردة"],
+  "24 - قالمة": ["قالمة", "بوشقوف", "عين مخلوف", "حمام دباغ", "وادي الزناتي", "عين العربي", "بني مزلين", "بومهرة أحمد", "تاملوكة", "عين بن بيضاء", "عين رقادة", "هيليوبوليس", "بوكموزة", "بلخير", "بني صالح", "عين صندل", "وادي الشحم", "وادي فراغة", "سلاوة عنونة"],
+  "25 - قسنطينة": ["قسنطينة", "الخروب", "عين سمارة", "ابن باديس", "ديدوش مراد", "حامة بوزيان", "زيغود يوسف", "عين عبيد", "ابن زياد", "مسعود بوجريو"],
+  "26 - المدية": ["المدية", "برج منايل", "سغوان", "قصر البخاري", "شلالة العذاورة", "البرواقية", "عين بوسيف", "العمارية", "أولاد إبراهيم"],
+  "27 - مستغانم": ["مستغانم", "عين تادلس", "حاسي ماماش", "مزغران", "سيدي لخضر", "عين النويصي", "بوقيراط", "سيرات", "فرناكة", "خضرة"],
+  "28 - المسيلة": ["المسيلة", "بوسعادة", "سيدي عيسى", "عين الحجل", "مقرة", "برهوم", "أولاد دراج", "سيدي عامر", "حمام الضلعة", "أولاد عدي"],
+  "29 - معسكر": ["معسكر", "غريس", "تيزي", "التيزي", "المحمدية", "سيق", "الزلامطة", "البرج", "وادي الأبطال", "ماوسة"],
+  "30 - ورقلة": ["ورقلة", "تقرت", "نزلة", "الطايب", "تماسين", "بلدة عمر", "الحجيرة", "سيدي خويلد", "الرويسات", "عين البيضاء"],
+  "31 - وهران": ["وهران", "بطيوة", "مرسى الحجاج", "عين الترك", "العنصر", "وادي تليلات", "بئر الجير", "أرزيو", "السانية", "سيدي الشحمي", "حاسي بن عقبة", "بن فريحة", "حاسي بونيف", "الكرمة", "المرسى الكبير", "بوفاتيس", "مسرغين", "بوتليليس", "عين البية", "قديل"],
+  "32 - البيض": ["البيض", "بريزينة", "الأبيض سيدي الشيخ", "بوقطب", "الرقاصة", "الغاسول", "الكاف لحمر", "استيتن", "المحبس"],
+  "33 - إليزي": ["إليزي", "دبداب", "عين أميناس", "إن أمناس", "برج الحواس"],
+  "34 - برج بوعريريج": ["برج بوعريريج", "رأس الوادي", "المنصورة", "بئر قاصد علي", "العناصر", "الحمادية", "عين تاغروت", "أولاد دحمان", "بليمور"],
+  "35 - بومرداس": ["بومرداس", "الثنية", "برج منايل", "يسر", "خميس الخشنة", "بودواو", "تيجلابين", "الناصرية", "لقاطة", "سيدي داود", "بني عمران", "زموري", "دلس", "بن شود", "تاورقة", "سوق الحد", "بغلية", "قورصو", "أولاد عيسى", "أولاد هداج"],
+  "36 - الطارف": ["الطارف", "بوثلجة", "البسباس", "الذرعان", "بن مهيدي", "عين العسل", "بوقوس", "حمام بني صالح", "الشط"],
+  "37 - تندوف": ["تندوف", "أم العسل"],
+  "38 - تسمسيلت": ["تسمسيلت", "ثنية الأحد", "العيون", "خميستي", "لرجام", "برج الأمير عبد القادر", "الملعب", "الأزهرية"],
+  "39 - الوادي": ["الوادي", "قمار", "الرقيبة", "الدويس", "الحمراية", "البياضة", "الرباح", "الطالب العربي", "المقرن", "المرارة"],
+  "40 - خنشلة": ["خنشلة", "الولجة", "الحامة", "عين الطويلة", "أولاد رشاش", "متوسة", "بوحمامة", "ششار", "قايس"],
+  "41 - سوق أهراس": ["سوق أهراس", "تاورة", "سدراتة", "مداوروش", "المشروحة", "الزعرورية", "الحدادة", "عين سنور", "أولاد إدريس", "بئر بوحوش"],
+  "42 - تيبازة": ["تيبازة", "شرشال", "حجوط", "القليعة", "فوكة", "بوسماعيل", "أحمر العين", "سيدي راشد", "مراد", "الحطاطبة"],
+  "43 - ميلة": ["ميلة", "فرجيوة", "شلغوم العيد", "عين البيضاء أحريش", "تاجنانت", "أولاد اخلوف", "ترعي بني هديل", "رأس الوادي", "العثمانية"],
+  "44 - عين الدفلى": ["عين الدفلى", "جليدة", "بومدفع", "العطاف", "العبادية", "بربوش", "العامرة", "العامرة", "عين السلطان", "حمام ريغة"],
+  "45 - النعامة": ["النعامة", "عين الصفراء", "مشرية", "مكمن بن عمار", "صفيصيفة", "جنين بورزق", "القصدير", "البيوض"],
+  "46 - عين تموشنت": ["عين تموشنت", "حمام بوحجر", "بني صاف", "عين الكيحل", "ولهاصة", "أولاد الكيحل", "شعبة اللحم", "سيدي بن عدة", "تارقة"],
+  "47 - غرداية": ["غرداية", "بونورة", "القرارة", "ضاية بن ضحوة", "بريان", "متليلي", "سبسب", "المنيعة"],
+  "48 - غليزان": ["غليزان", "وادي رهيو", "يلل", "عمي موسى", "جديوية", "الولجة", "الزمرة", "عين طارق", "مازونة", "الرمكة"],
+  "49 - تميمون": ["تيميمون", "أولاد سعيد", "تيمزريت", "أقبلي", "بني مهدي", "طلمين"],
+  "50 - برج باجي مختار": ["برج باجي مختار", "تيمياوين"],
+  "51 - أولاد جلال": ["أولاد جلال", "راس الدبداب", "الشقة", "الدويس", "سيدي خالد"],
+  "52 - بني عباس": ["بني عباس", "تيمودي", "بوشارب", "إقلي", "كراكدة", "تامترت"],
+  "53 - إن صالح": ["إن صالح", "فقارة الزوى", "عين صالح الجديدة"],
+  "54 - إن قزام": ["إن قزام", "تين زواتين"],
+  "55 - توقرت": ["توقرت", "الطيبات", "الجامعة", "النزلة", "تماسين", "بن ناصر"],
+  "56 - جانت": ["جانت", "برج الحواس", "إهرير", "الدبداب"],
+  "57 - المغير": ["المغير", "سيدي خليل", "المرارة", "الجامعة", "الطيبات", "المزيرعة"],
+  "58 - المنيعة": ["المنيعة", "حاسي القارة", "حاسي الفحل", "تالمين", "عين ميهوب"]
+            // يمكن إضافة بقية الولايات والبلديات هنا
+        };
+
+        // إعداد Select2 ثم ملء قائمة الولايات
+        $(document).ready(function() {
+            // تهيئة Select2
+            $('.select2').select2({
+                dir: "rtl",
+                language: "ar"
+            });
+
+            // ملء قائمة الولايات
+            const wilayaSelect = $('#wilaya');
+            wilayas.forEach(wilaya => {
+                wilayaSelect.append(new Option(wilaya, wilaya));
+            });
+
+            // عند تغيير الولاية، قم بتحديث قائمة البلديات
+            wilayaSelect.on('change', function() {
+                const selectedWilaya = $(this).val();
+                const communeSelect = $('#commune');
+                
+                // تفريغ القائمة القديمة
+                communeSelect.empty().append(new Option('اختر البلدية', '', true, true));
+                
+                // تعبئة البلديات إذا كانت موجودة
+                if (communes[selectedWilaya]) {
+                    communes[selectedWilaya].forEach(commune => {
+                        communeSelect.append(new Option(commune, commune));
+                    });
+                    communeSelect.prop('disabled', false);
+                } else {
+                    // إذا لم تكن البلديات متوفرة لهذه الولاية
+                    communeSelect.append(new Option('البلديات غير متوفرة لهذه الولاية', '', true, true));
+                    communeSelect.prop('disabled', true);
+                }
+                
+                communeSelect.trigger('change');
+            });
+
+            // عرض اسم الملف المختار للبطاقة الوطنية
+            $('#idCard').change(function() {
+                const fileName = $(this).val().split('\\').pop();
+                if (fileName) {
+                    $('#idCardLabel').text(fileName);
+                } else {
+                    $('#idCardLabel').text('اضغط هنا لتحميل صورة البطاقة الوطنية');
+                }
+            });
+
+            // التحقق من صحة النموذج
+            $('#sellerRegistrationForm').submit(function(event) {
+                let isValid = true;
+                
+                // التحقق من رقم الهاتف (يجب أن يبدأ بـ 5/6/7 ويكون 9 أرقام)
+                const phone = $('#phone').val();
+                const phoneRegex = /^[567]\d{8}$/;
+                if (!phoneRegex.test(phone)) {
+                    $('#phone-error').show();
+                    $('#phone').addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $('#phone-error').hide();
+                    $('#phone').removeClass('is-invalid');
+                }
+                
+                // التحقق من رقم التعريف الوطني (يجب أن يكون 18 رقم)
+                const nin = $('#nin').val();
+                if (nin.length !== 18 || !/^\d+$/.test(nin)) {
+                    $('#nin-error').show();
+                    $('#nin').addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $('#nin-error').hide();
+                    $('#nin').removeClass('is-invalid');
+                }
+                
+                // التحقق من تطابق كلمات المرور
+                const password = $('#password').val();
+                const confirmPassword = $('#confirmPassword').val();
+                if (password !== confirmPassword) {
+                    $('#confirmPassword').addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $('#confirmPassword').removeClass('is-invalid');
+                }
+                
+                // التحقق من قوة كلمة المرور
+                const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+                if (!passwordRegex.test(password)) {
+                    $('#password').addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $('#password').removeClass('is-invalid');
+                }
+                
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        // دالة لإظهار/إخفاء كلمة المرور
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const icon = passwordInput.nextElementSibling.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

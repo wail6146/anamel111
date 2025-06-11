@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <title>متجر المنتجات الريفية</title>
+    <link rel="stylesheet" href="improved_css (2).css">
+    <link rel="stylesheet" href="improvements.css">
+    <link rel="stylesheet" href="Untitled-1.css">
+    <script src="improved_js.js" defer></script>
+    <script src="Untitled-1.js" defer></script>
+    <script src="code.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+</script>
+    <header>
+            <div class="container">
+                <div class="logo">
+                    <h1><i class="fas fa-store"></i>أنــامل</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                        <li><a href="products.html"><i class="fas fa-box-open"></i> المنتجات</a></li>
+                        <li><a href="sellers.html"><i class="fas fa-users"></i> البائعون</a></li>
+                        <!-- عنصر القائمة المشروط بتسجيل الدخول -->
+                        <li id="dashboard-link" style="display: none;"><a href="واجهة البائع/index.php"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                        <li id="login-link"><a href="تسجيل الدخول/Untitled-1.html"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</a></li>
+                        <!-- إضافة رابط مباشر لواجهة البائع -->
+                        <li><a href="واجهة البائع/Untitled-1.html"><i class="fas fa-store-alt"></i> واجهة البائع</a></li>
+                        <li id="profile-link" style="display: none;"><a href="profile.html"><i class="fas fa-user"></i> الملف الشخصي</a></li>
+                        <li id="logout-link" style="display: none;"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+                        <li class="cart-icon"><a href="#" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i> السلة <span id="cart-count">0</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+    <section class="hero">
+        <div class="overlay">
+            <div class="hero-content">
+                <h1>أفضل المنتجات الريفية الطبيعية</h1>
+                <p>منتجات محلية 100% بأجود الأنواع مباشرة من قلب الطبيعة</p>
+                <a href="#products" class="btn"><i class="fas fa-shopping-basket"></i> تصفح المنتجات</a>
+                <a href="تسجيل كبائغ/seller-registration-page.html" class="btn secondary-btn"><i class="fas fa-store"></i> سجل كبائع</a>
+            </div>
+        </div>
+    </section>
+    <section class="features">
+        <div class="container">
+            <div class="feature">
+                <i class="fas fa-truck"></i>
+                <h3>توصيل سريع</h3>
+                <p>توصيل لجميع المناطق</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-leaf"></i>
+                <h3>منتجات طبيعية</h3>
+                <p>بدون مواد حافظة</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-medal"></i>
+                <h3>جودة عالية</h3>
+                <p>ضمان الرضا التام</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="container">
+            <h2><i class="fas fa-box-open"></i> منتجاتنا المميزة</h2>
+            <div class="product-filter">
+                <button class="filter-btn active">الكل</button>
+                <button class="filter-btn">العسل</button>
+                <button class="filter-btn">الزيوت</button>
+                <button class="filter-btn">الألبان</button>
+            </div>
+            <div class="product-container">
+                <div class="product">
+                    <div class="product-badge">منتج مميز</div>
+                    <div class="product-image">
+                        <img src="imag/honey.jpg" alt="عسل طبيعي">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>عسل طبيعي</h3>
+                        <p>عسل جبلي نقي 100%</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">1500 دج</span>
+                            <button class="buy-btn" onclick="addToCart('عسل طبيعي', 1500)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="imag/egg.jpg" alt="بيض">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>بيض</h3>
+                        <p>بيض بلدي طازج من دجاج طبيعي يتغذى على أعلاف صحية</p>
+                        <div class="quantity-info">الحد الأدنى: كرتون (30 بيضة)</div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">1050 دج</span>
+                            <button class="buy-btn" onclick="addToCart('بيض (كرتون 30 بيضة)', 1050)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-badge sale">تخفيض 10%</div>
+                    <div class="product-image">
+                        <img src="imag/butter.jpeg" alt="زبدة">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>زبدة </h3>
+                        <p>طبيعية وخالية من الإضافات</p>
+                        <div class="quantity-info">الحد الأدنى: 250غ</div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">300 دج</span>
+                            <button class="buy-btn" onclick="addToCart('زبدة  (250غ)', 300)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="imag/حقائب.jpg" alt="زيت الزيتون">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <!-- new-->
+                    <div class="product-info">
+                        <h3>حقائب مطبوعة حرارية</h3>
+                        <p>حقائب قماشية مصنوعة يدوياً، تضفي لمسة مميزة على هدايا العيد. تُخصص كل حقيبة بطباعة اسم الطفل، وهي مثالية لتقديم العيدية والحلويات.</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">1000 دج</span>
+                            <button class="buy-btn" onclick="addToCart('حقائب مطبوعة حرارية', 1000)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="/imag/تنورة01.jpg" alt="بلوزة">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <!--3-->
+                    <div class="product-info">
+                        <h3>بلوزة</h3>
+                        <p>غوب ستان مع جيلي بالطرز التقليدي بلمسة عصرية</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">12000 دج</span>
+                            <button class="buy-btn" onclick="addToCart('بلوزة', 12000)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="imag/تنورة 02.jpg" alt="ملحفة">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>ملحفة</h3>
+                        <p>قماش حريري </p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">28000 دج</span>
+                            <button class="buy-btn" onclick="addToCart('ملحفة', 28000)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="/imag/تنورة03.jpg" alt="كاراكو">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <!--2-->
+                    <div class="product-info">
+                        <h3>كاراكو</h3>
+                        <p>قماش من القطيفة مطرز يدويا مع أحجار الكريستال</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">45000 دج</span>
+                            <button class="buy-btn" onclick="addToCart(' كاراكو', 45000)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="/imag/تنورة04.jpg" alt="غندورة">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <!--1-->
+                    <div class="product-info">
+                        <h3>غندورة</h3>
+                        <p>قماش مصنوع من القطيفة مطرز</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">30000 دج</span>
+                            <button class="buy-btn" onclick="addToCart('غندورة', 30000)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="/imag/وسادة.jpg" alt="وســـائد">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                     <!-- neww-->
+                    <div class="product-info">
+                        <h3>وســادة</h3>
+                        <p>وســائد مطبوعة حراريا حسب الطلب للأعياد و المناسبات</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">800 دج</span>
+                            <button class="buy-btn" onclick="addToCart('وســادة', 800)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 666-->
+                 
+                <div class="product">
+                    <div class="product-image">
+                        <img src="/imag/أشغال .jpg" alt="حاملة مفاتيح ">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>حاملة مفاتيح</h3>
+                        <p>طقم عملي وأنيق، مصنوع يدوياً خصيصاً للطواقم الطبية وشبه الطبية (أطباء، ممرضين، صيادلة، طلبة).</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">150 دج</span>
+                            <button class="buy-btn" onclick="addToCart('حاملة مفاتيح', 150)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+                 <!--666-->
+                <div class="product">
+                    <div class="product-image">
+                        <img src="/imag/milk.jpg" alt="لبن رائب">
+                        <div class="product-overlay">
+                            <button class="quick-view"><i class="fas fa-eye"></i> عرض سريع</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>لبن رائب</h3>
+                        <p>مصدر طبيعي للبروبيوتيك</p>
+                        <div class="quantity-info">الحد الأدنى: 1 لتر</div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">150 دج</span>
+                            <button class="buy-btn" onclick="addToCart('لبن رائب', 150)"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- قسم الاستشارة -->
+    <section id="consultation" class="consultation-section">
+        <div class="container">
+            <h2><i class="fas fa-comments"></i> الاستشارة والدعم</h2>
+            <p>هل لديكِ سؤال أو تحتاجين إلى نصيحة؟ نحن هنا لمساعدتكِ في تطوير عملكِ الريفي</p>
+            <div class="consultation-content">
+                <div class="consultation-form">
+                    <h3>أرسلي استفسارك</h3>
+                    <form id="consultationForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="اسمكِ الكامل" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="بريدكِ الإلكتروني" required>
+                        </div>
+                        <div class="form-group">
+                            <select required>
+                                <option value="">اختاري نوع الاستشارة</option>
+                                <option value="platform">كيفية استخدام المنصة</option>
+                                <option value="business">تطوير العمل الريفي</option>
+                                <option value="marketing">التسويق والمبيعات</option>
+                                <option value="technical">مشكلة تقنية</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="اكتبي استفسارك أو سؤالك هنا..." rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> إرسال الاستشارة</button>
+                    </form>
+                </div>
+                <div class="consultation-info">
+                    <h3>كيف يمكننا مساعدتك؟</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> شرح كيفية استخدام المنصة</li>
+                        <li><i class="fas fa-check"></i> نصائح لتحسين جودة المنتجات</li>
+                        <li><i class="fas fa-check"></i> استراتيجيات التسويق الفعالة</li>
+                        <li><i class="fas fa-check"></i> حل المشاكل التقنية</li>
+                        <li><i class="fas fa-check"></i> تطوير المهارات الريفية</li>
+                    </ul>
+                    <div class="contact-methods">
+                        <h4>طرق التواصل الأخرى:</h4>
+                        <p><i class="fas fa-phone"></i> الهاتف: 0123456789</p>
+                        <p><i class="fas fa-envelope"></i> البريد: support@rural-platform.dz</p>
+                        <p><i class="fab fa-whatsapp"></i> واتساب: 0123456789</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم التعليم -->
+    <section id="education" class="education-section">
+        <div class="container">
+            <h2><i class="fas fa-graduation-cap"></i> ركن التعليم والتدريب</h2>
+            <p>تعلمي كيفية استخدام المنصة وطرق تحسين عملكِ الريفي من خلال الدروس والموارد التعليمية</p>
+            
+            <div class="education-categories">
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-tab="platform-guide">دليل المنصة</button>
+                    <button class="tab-btn" data-tab="business-tips">نصائح الأعمال</button>
+                    <button class="tab-btn" data-tab="videos">فيديوهات تعليمية</button>
+                    <button class="tab-btn" data-tab="resources">موارد مفيدة</button>
+                </div>
+
+                <div class="tab-content active" id="platform-guide">
+                    <div class="lessons-grid">
+                        <div class="lesson-card">
+                            <div class="lesson-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <h3>التسجيل في المنصة</h3>
+                            <p>تعلمي كيفية إنشاء حساب جديد وإعداد ملفك الشخصي</p>
+                            <a href="#" class="lesson-link">ابدئي التعلم <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        
+                        <div class="lesson-card">
+                            <div class="lesson-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <h3>إضافة المنتجات</h3>
+                            <p>كيفية عرض منتجاتك بطريقة احترافية وجذابة</p>
+                            <a href="#" class="lesson-link">ابدئي التعلم <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        
+                        <div class="lesson-card">
+                            <div class="lesson-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <h3>إدارة الطلبات</h3>
+                            <p>تعلمي كيفية متابعة وإدارة طلبات العملاء</p>
+                            <a href="#" class="lesson-link">ابدئي التعلم <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="business-tips">
+                    <div class="tips-list">
+                        <div class="tip-item">
+                            <h4><i class="fas fa-lightbulb"></i> تحسين جودة المنتجات</h4>
+                            <p>نصائح عملية لضمان جودة عالية لمنتجاتك الريفية</p>
+                        </div>
+                        <div class="tip-item">
+                            <h4><i class="fas fa-camera"></i> التصوير الاحترافي</h4>
+                            <p>كيفية التقاط صور جذابة لمنتجاتك باستخدام الهاتف</p>
+                        </div>
+                        <div class="tip-item">
+                            <h4><i class="fas fa-chart-line"></i> زيادة المبيعات</h4>
+                            <p>استراتيجيات فعالة لزيادة مبيعاتك وجذب المزيد من العملاء</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="videos">
+                    <div class="videos-grid">
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <i class="fas fa-play-circle"></i>
+                                <span class="duration">5:30</span>
+                            </div>
+                            <h4>مقدمة عن المنصة</h4>
+                            <p>شرح شامل لكيفية البدء في استخدام المنصة</p>
+                        </div>
+                        
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <i class="fas fa-play-circle"></i>
+                                <span class="duration">8:15</span>
+                            </div>
+                            <h4>إضافة منتج جديد</h4>
+                            <p>خطوات مفصلة لإضافة منتجاتك بطريقة صحيحة</p>
+                        </div>
+                        
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <i class="fas fa-play-circle"></i>
+                                <span class="duration">6:45</span>
+                            </div>
+                            <h4>نصائح التسويق</h4>
+                            <p>كيفية الترويج لمنتجاتك وزيادة المبيعات</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="resources">
+                    <div class="resources-list">
+                        <div class="resource-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="resource-info">
+                                <h4>دليل البائع الشامل</h4>
+                                <p>ملف PDF يحتوي على جميع المعلومات المهمة</p>
+                                <a href="#" class="download-btn">تحميل <i class="fas fa-download"></i></a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-item">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="resource-info">
+                                <h4>قائمة مراجعة المنتجات</h4>
+                                <p>قائمة للتأكد من جودة منتجاتك قبل النشر</p>
+                                <a href="#" class="download-btn">تحميل <i class="fas fa-download"></i></a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-item">
+                            <i class="fas fa-chart-pie"></i>
+                            <div class="resource-info">
+                                <h4>نموذج تحليل المبيعات</h4>
+                                <p>أداة لمتابعة وتحليل أداء مبيعاتك</p>
+                                <a href="#" class="download-btn">تحميل <i class="fas fa-download"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="featured-sellers" class="sellers">
+        <div class="container">
+            <h2><i class="fas fa-award"></i> بائعون مميزون</h2>
+            <div class="sellers-container">
+                <!-- سيتم تحميل البائعين ديناميًا من قاعدة البيانات -->
+                <!-- مثال لبائع واحد: -->
+                <div class="seller-card">
+                    <div class="seller-image">
+                        <img src="imag/wail.png" alt="صورة البائع">
+                    </div>
+                    <div class="seller-info">
+                        <h3>هبة شايب</h3>
+                        <p class="seller-location"><i class="fas fa-map-marker-alt"></i> ولاية الطارف، الجزائر</p>
+                        <p class="seller-category">متخصصة في: منتجات الألبان</p>
+                        <a href="seller-profile.html?id=1" class="btn small">عرض الملف الشخصي</a>
+                    </div>
+                </div>
+                
+                <div class="seller-card">
+                    <div class="seller-image">
+                        <img src="avatar-placeholder.jpg" alt="صورة البائع">
+                    </div>
+                    <div class="seller-info">
+                        <p class="seller-location"><i class="fas fa-map-marker-alt"></i> ولاية الطارف</p>
+                        <p class="seller-category">متخصصة في: منتجات الألبان</p>
+                        <a href="seller-profile.html?id=2" class="btn small">عرض الملف الشخصي</a>
+                    </div>
+                </div>
+                <!-- المزيد من البائعين هنا -->
+            </div>
+            <div class="view-all-link">
+                <a href="sellers.html" class="btn">عرض جميع البائعين <i class="fas fa-arrow-left"></i></a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="newsletter">
+        <div class="container">
+            <h2>انضم إلى نشرتنا البريدية</h2>
+            <p>اشترك ليصلك كل جديد عن منتجاتنا والعروض الخاصة</p>
+            <form>
+                <input type="email" placeholder="أدخل بريدك الإلكتروني" required>
+                <button type="submit">اشتراك</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- سلة المشتريات -->
+    <div class="cart" id="cart">
+        <div class="cart-header">
+            <h2><i class="fas fa-shopping-cart"></i> سلة المشتريات</h2>
+            <button class="close-btn" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-body">
+            <ul id="cart-items"></ul>
+        </div>
+        <div class="cart-footer">
+            <p>المجموع: <span id="total-price">0</span> دج</p>
+            <button class="checkout-btn" onclick="showPaymentOptions()"><i class="fas fa-credit-card"></i> إتمام الشراء</button>
+        </div>
+    </div>
+
+    <!-- نموذج خيارات الدفع -->
+    <div id="payment-options-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>اختر طريقة الدفع</h2>
+                <span class="close-modal" onclick="closeModal('payment-options-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="payment-options">
+                    <button class="payment-option" onclick="showCashOnDeliveryForm()">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>الدفع عند الاستلام</span>
+                    </button>
+                    <button class="payment-option" onclick="showCreditCardForm()">
+                        <i class="fas fa-credit-card"></i>
+                        <span>بطاقة الائتمان (بريد الجزائر)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج الدفع عند الاستلام -->
+    <div id="cash-on-delivery-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>معلومات التوصيل للدفع عند الاستلام</h2>
+                <span class="close-modal" onclick="closeModal('cash-on-delivery-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="delivery-form">
+                    <div class="form-group">
+                        <label for="full-name">الاسم الكامل</label>
+                        <input type="text" id="full-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">رقم الهاتف</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">العنوان التفصيلي</label>
+                        <textarea id="address" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="wilaya">الولاية</label>
+                        <select id="wilaya" required>
+                            <option value="">اختر الولاية</option>
+                            <option value="01 - أدرار">01 - أدرار</option>
+                            <option value="02 - الشلف">02 - الشلف</option>
+                            <option value="03 - الأغواط">03 - الأغواط</option>
+                            <option value="04 - أم البواقي">04 - أم البواقي</option>
+                            <option value="05 - باتنة">05 - باتنة</option>
+                            <option value="06 - بجاية">06 - بجاية</option>
+                            <option value="07 - بسكرة">07 - بسكرة</option>
+                            <option value="08 - بشار">08 - بشار</option>
+                            <option value="09 - البليدة">09 - البليدة</option>
+                            <option value="10 - البويرة">10 - البويرة</option>
+                            <option value="11 - تمنراست">11 - تمنراست</option>
+                            <option value="12 - تبسة">12 - تبسة</option>
+                            <option value="13 - تلمسان">13 - تلمسان</option>
+                            <option value="14 - تيارت">14 - تيارت</option>
+                            <option value="15 - تيزي وزو">15 - تيزي وزو</option>
+                            <option value="16 - الجزائر">16 - الجزائر</option>
+                            <option value="17 - الجلفة">17 - الجلفة</option>
+                            <option value="18 - جيجل">18 - جيجل</option>
+                            <option value="19 - سطيف">19 - سطيف</option>
+                            <option value="20 - سعيدة">20 - سعيدة</option>
+                            <option value="21 - سكيكدة">21 - سكيكدة</option>
+                            <option value="22 - سيدي بلعباس">22 - سيدي بلعباس</option>
+                            <option value="23 - عنابة">23 - عنابة</option>
+                            <option value="24 - قالمة">24 - قالمة</option>
+                            <option value="25 - قسنطينة">25 - قسنطينة</option>
+                            <option value="26 - المدية">26 - المدية</option>
+                            <option value="27 - مستغانم">27 - مستغانم</option>
+                            <option value="28 - المسيلة">28 - المسيلة</option>
+                            <option value="29 - معسكر">29 - معسكر</option>
+                            <option value="30 - ورقلة">30 - ورقلة</option>
+                            <option value="31 - وهران">31 - وهران</option>
+                            <option value="32 - البيض">32 - البيض</option>
+                            <option value="33 - إليزي">33 - إليزي</option>
+                            <option value="34 - برج بوعريريج">34 - برج بوعريريج</option>
+                            <option value="35 - بومرداس">35 - بومرداس</option>
+                            <option value="36 - الطارف">36 - الطارف</option>
+                            <option value="37 - تندوف">37 - تندوف</option>
+                            <option value="38 - تيسمسيلت">38 - تيسمسيلت</option>
+                            <option value="39 - الوادي">39 - الوادي</option>
+                            <option value="40 - خنشلة">40 - خنشلة</option>
+                            <option value="41 - سوق أهراس">41 - سوق أهراس</option>
+                            <option value="42 - تيبازة">42 - تيبازة</option>
+                            <option value="43 - ميلة">43 - ميلة</option>
+                            <option value="44 - عين الدفلى">44 - عين الدفلى</option>
+                            <option value="45 - النعامة">45 - النعامة</option>
+                            <option value="46 - عين تموشنت">46 - عين تموشنت</option>
+                            <option value="47 - غرداية">47 - غرداية</option>
+                            <option value="48 - غليزان">48 - غليزان</option>
+                            <option value="49 - تيميمون">49 - تيميمون</option>
+                            <option value="50 - برج باجي مختار">50 - برج باجي مختار</option>
+                            <option value="51 - أولاد جلال">51 - أولاد جلال</option>
+                            <option value="52 - بني عباس">52 - بني عباس</option>
+                            <option value="53 - عين صالح">53 - عين صالح</option>
+                            <option value="54 - عين قزام">54 - عين قزام</option>
+                            <option value="55 - توقرت">55 - توقرت</option>
+                            <option value="56 - جانت">56 - جانت</option>
+                            <option value="57 - المغير">57 - المغير</option>
+                            <option value="58 - المنيعة">58 - المنيعة</option>
+                          </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">ملاحظات إضافية</label>
+                        <textarea id="notes" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">تأكيد الطلب</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج الدفع ببطاقة الائتمان -->
+    <div id="credit-card-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الدفع ببطاقة الائتمان</h2>
+                <span class="close-modal" onclick="closeModal('credit-card-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="credit-card-container">
+                    <div class="card">
+                        <div class="card-front">
+                            <div class="card-logo">بريد الجزائر</div>
+                            <div class="card-chip"></div>
+                            <div class="card-number" id="card-number-display">**** **** **** ****</div>
+                            <div class="card-info">
+                                <div class="card-holder">
+                                    <span>حامل البطاقة</span>
+                                    <div id="card-holder-display">اسم حامل البطاقة</div>
+                                </div>
+                                <div class="card-expiry">
+                                    <span>تاريخ الانتهاء</span>
+                                    <div id="card-expiry-display">MM/YY</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-stripe"></div>
+                            <div class="card-ccv">
+                                <span>CCV</span>
+                                <div class="ccv-band">
+                                    <div id="ccv-display">***</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form id="credit-card-form">
+                        <div class="form-group">
+                            <label for="card-number">رقم البطاقة</label>
+                            <input type="text" id="card-number" maxlength="19" placeholder="**** **** **** ****" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-holder">اسم حامل البطاقة</label>
+                            <input type="text" id="card-holder" placeholder="كما هو مكتوب على البطاقة" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="expiry-date">تاريخ الانتهاء</label>
+                                <input type="text" id="expiry-date" placeholder="MM/YY" maxlength="5" required>
+                            </div>
+                            <div class="form-group half">
+                                <label for="ccv">رمز الأمان (CCV)</label>
+                                <input type="text" id="ccv" placeholder="***" maxlength="3" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-address">عنوان الفواتير</label>
+                            <textarea id="billing-address" rows="2" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">إتمام عملية الدفع</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسالة تأكيد الطلب -->
+    <div id="order-confirmation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تم تأكيد طلبك بنجاح</h2>
+                <span class="close-modal" onclick="closeModal('order-confirmation-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="confirmation-message">
+                    <i class="fas fa-check-circle"></i>
+                    <p>شكراً لك! تم استلام طلبك بنجاح وسيتم التواصل معك قريباً.</p>
+                    <p>رقم الطلب: <span id="order-number"></span></p>
+                </div>
+                <button class="btn" onclick="closeModal('order-confirmation-modal')">العودة للتسوق</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-store"></i> متجر الريف</h3>
+                    <p>منتجات طبيعية من قلب الريف الجزائري</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#">الرئيسية</a></li>
+                        <li><a href="#products">المنتجات</a></li>
+                        <li><a href="#">عن المتجر</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>اتصل بنا</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> الجزائر، ولاية الطارف</p>
+                    <p><i class="fas fa-phone"></i> 0123456789</p>
+                    <p><i class="fas fa-envelope"></i> info@rifestore.dz</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>جميع الحقوق محفوظة &copy; 2025 - متجر الريف</p>
+            </div>
+        </div>
+    </footer>
+    <!--credit card-->
+    <script>
+        const ccvInput = document.getElementById('ccv');
+        const card = document.querySelector('.card');
+      
+        ccvInput.addEventListener('focus', () => {
+          card.classList.add('flipped');
+        });
+      
+        ccvInput.addEventListener('blur', () => {
+          card.classList.remove('flipped');
+        });
+      </script> 
+  <script type="text/babel" src="code.js"></script>
+
+<script>
+// إضافة وظائف JavaScript للتفاعل
+document.addEventListener('DOMContentLoaded', function() {
+    // تفعيل التبويبات
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetTab = btn.getAttribute('data-tab');
+            
+            // إزالة الفئة النشطة من جميع الأزرار والمحتويات
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // إضافة الفئة النشطة للزر والمحتوى المحدد
+            btn.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+    
+    // تأثير الظهور التدريجي
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+    
+    // مراقبة العناصر للتأثير
+    document.querySelectorAll('.lesson-card, .consultation-form, .feature').forEach(el => {
+        el.classList.add('fade-in');
+        observer.observe(el);
+    });
+    
+    // تحسين نموذج الاستشارة
+    const consultationForm = document.getElementById('consultationForm');
+    if (consultationForm) {
+        consultationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // إضافة منطق إرسال النموذج هنا
+            alert('تم إرسال استشارتك بنجاح! سنتواصل معك قريباً.');
+        });
+    }
+});
+</script>
+</body>
+</html>
+<script>
+    function logout() {
+        // منطق تسجيل الخروج
+        localStorage.removeItem('user_token');
+        sessionStorage.clear();
+        window.location.href = 'تسجيل الدخول/Untitled-1.html';
+    }
+    
+    // فحص حالة تسجيل الدخول
+    function checkLoginStatus() {
+        const token = localStorage.getItem('user_token');
+        const loginLink = document.getElementById('login-link');
+        const registerDropdown = document.getElementById('register-dropdown');
+        const profileLink = document.getElementById('profile-link');
+        const logoutLink = document.getElementById('logout-link');
+        const dashboardLink = document.getElementById('dashboard-link');
+        
+        if (token) {
+            loginLink.style.display = 'none';
+            registerDropdown.style.display = 'none';
+            profileLink.style.display = 'block';
+            logoutLink.style.display = 'block';
+            dashboardLink.style.display = 'block';
+        }
+    }
+    
+    // تشغيل فحص حالة تسجيل الدخول عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', checkLoginStatus);
+</script>
+</body>
+</html>
+
+<!-- إضافة CSS للقائمة المنسدلة -->
+<style>
+    .dropdown {
+        position: relative;
+    }
+    
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        min-width: 200px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        padding: 10px 0;
+        z-index: 1000;
+    }
+    
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-menu li {
+        list-style: none;
+    }
+    
+    .dropdown-menu a {
+        display: block;
+        padding: 10px 20px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+    
+    .dropdown-menu a:hover {
+        background-color: #f8f9fa;
+        color: #2ecc71;
+    }
+    
+    .hero-buttons {
+        margin-top: 2rem;
+    }
+    
+    .hero-buttons .btn {
+        margin: 0 10px;
+        padding: 12px 30px;
+        font-weight: 600;
+        border-radius: 25px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        color: white;
+        border: none;
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+</style>
+
+

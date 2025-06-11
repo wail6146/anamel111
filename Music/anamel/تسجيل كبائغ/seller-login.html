@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل دخول البائع - المنتجات الريفية الجزائرية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Tajawal', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .login-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-header h1 {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .form-header .seller-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .btn-login {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <main class="container py-5">
+        <div class="login-container">
+            <div class="form-header">
+                <div class="seller-badge">
+                    <i class="fas fa-store"></i> منطقة البائعين
+                </div>
+                <h1><i class="fas fa-sign-in-alt"></i> تسجيل دخول البائع</h1>
+                <p class="text-muted">أدخل بيانات حسابك للوصول إلى لوحة تحكم البائع</p>
+            </div>
+
+            <form id="sellerLoginForm" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email" 
+                               name="email" 
+                               required 
+                               autocomplete="email"
+                               placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                    <div class="invalid-feedback">يرجى إدخال بريد إلكتروني صحيح</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">كلمة المرور</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <input type="password" 
+                               class="form-control" 
+                               id="password" 
+                               name="password" 
+                               required 
+                               autocomplete="current-password"
+                               placeholder="أدخل كلمة المرور">
+                        <button class="btn btn-outline-secondary" 
+                                type="button" 
+                                id="togglePassword"
+                                aria-label="إظهار/إخفاء كلمة المرور">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="invalid-feedback">كلمة المرور مطلوبة</div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" 
+                           class="form-check-input" 
+                           id="rememberMe" 
+                           name="rememberMe">
+                    <label class="form-check-label" for="rememberMe">تذكرني</label>
+                </div>
+
+                <div id="loginError" class="alert alert-danger d-none" role="alert"></div>
+
+                <button type="submit" class="btn btn-primary btn-login">
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    <span class="button-text">تسجيل الدخول</span>
+                </button>
+
+                <div class="mt-4 text-center">
+                    <a href="/frogpass/forgot-password.html" class="text-muted">نسيت كلمة المرور؟</a>
+                    <br><br>
+                    <p class="mb-2">ليس لديك حساب بائع؟</p>
+                    <a href="seller-registration-page.html" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-user-plus"></i> إنشاء حساب بائع جديد
+                    </a>
+                    <br><br>
+                    <a href="../تسجيل الدخول/Untitled-1.html" class="text-muted">
+                        <i class="fas fa-user"></i> تسجيل دخول كزبون
+                    </a>
+                    <span class="mx-2">|</span>
+                    <a href="../improved_html3.html" class="text-muted">
+                        <i class="fas fa-home"></i> العودة للرئيسية
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Form submission
+        document.getElementById('sellerLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const spinner = submitBtn.querySelector('.spinner-border');
+            const buttonText = submitBtn.querySelector('.button-text');
+            
+            // Show loading
+            spinner.classList.remove('d-none');
+            buttonText.textContent = 'جاري تسجيل الدخول...';
+            submitBtn.disabled = true;
+            
+            // Simulate login process (replace with actual login logic)
+            setTimeout(() => {
+                // Hide loading
+                spinner.classList.add('d-none');
+                buttonText.textContent = 'تسجيل الدخول';
+                submitBtn.disabled = false;
+                
+                // Redirect to seller dashboard
+                window.location.href = '../واجهة البائع/index.php';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

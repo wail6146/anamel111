@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نجاح التسجيل - المنتجات الريفية الجزائرية</title>
+    <!-- تضمين مكتبات Bootstrap RTL و FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .success-container {
+            max-width: 700px;
+            margin: 100px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 70px;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        .success-header h2 {
+            color: #28a745;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .success-message {
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .email-highlight {
+            font-weight: bold;
+            color: #28a745;
+            background-color: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .next-steps {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: right;
+        }
+        .next-steps h4 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        .next-steps ol {
+            padding-right: 20px;
+        }
+        .next-steps li {
+            margin-bottom: 10px;
+        }
+        .btn-home {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 10px 30px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        .btn-home:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .warning-message {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <?php
+    session_start();
+    
+    // التحقق من نجاح التسجيل
+    if (!isset($_SESSION['registration_success']) || $_SESSION['registration_success'] !== true) {
+        header('Location: register.php');
+        exit;
+    }
+    
+    $registeredEmail = $_SESSION['registered_email'] ?? 'البريد الإلكتروني';
+    $emailError = isset($_SESSION['email_error']) && $_SESSION['email_error'] === true;
+    ?>
+
+    <div class="container success-container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="success-header">
+            <h2>تم التسجيل بنجاح!</h2>
+        </div>
+        <div class="success-message">
+            <p>شكرًا لك على التسجيل كبائع في منصة المنتجات الريفية الجزائرية.</p>
+            <p>تم إرسال رسالة تفعيل إلى بريدك الإلكتروني:</p>
+            <div class="email-highlight"><?php echo htmlspecialchars($registeredEmail); ?></div>
+            <p>يرجى التحقق من بريدك الإلكتروني واتباع الرابط الموجود لتفعيل حسابك.</p>
+        </div>
+        
+        <?php if ($emailError): ?>
+        <div class="warning-message" style="display: block;">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>ملاحظة:</strong> حدث خطأ أثناء إرسال بريد التفعيل. سوف نحاول إرساله مرة أخرى قريبًا. يمكنك أيضًا الاتصال بفريق الدعم إذا لم تتلق البريد الإلكتروني.
+        </div>
+        <?php endif; ?>
+        
+        <div class="next-steps">
+            <h4>الخطوات التالية:</h4>
+            <ol>
+                <li>قم بتفعيل حسابك من خلال النقر على الرابط المرسل إلى بريدك الإلكتروني.</li>
+                <li>سيقوم فريقنا بمراجعة معلوماتك والتحقق منها.</li>
+                <li>عند الموافقة على حسابك، سيتم إرسال بريد إلكتروني آخر لإعلامك.</li>
+                <li>يمكنك بعد ذلك تسجيل الدخول وبدء إضافة منتجاتك.</li>
+            </ol>
+        </div>
+        
+        <a href="index.php" class="btn btn-success btn-home">
+            <i class="fas fa-home me-2"></i> العودة إلى الصفحة الرئيسية
+        </a>
+    </div>
+
+    <!-- تضمين JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // مسح معلومات الجلسة بعد فترة قصيرة
+        setTimeout(function() {
+            <?php
+            // مسح معلومات الجلسة المتعلقة بالتسجيل
+            unset($_SESSION['registration_success']);
+            unset($_SESSION['registered_email']);
+            unset($_SESSION['email_error']);
+            ?>
+        }, 3000);
+    </script>
+</body>
+</html>
