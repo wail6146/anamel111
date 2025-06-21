@@ -651,18 +651,18 @@ footer {
 @media (max-width: 768px) {
     .container {
         width: 95%;
+        padding: 0 10px;
     }
 
     header .container {
         flex-direction: column;
-        gap: 15px;
+        text-align: center;
     }
 
     nav ul {
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
         flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
     }
 
     .hero h1 {
@@ -678,73 +678,43 @@ footer {
     }
 
     .feature {
-        margin-bottom: 20px;
+        width: 100%;
     }
 
     .product-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: 1fr;
     }
 
-    .newsletter form {
+    .product {
+        margin: 10px 0;
+    }
+}
+
+/* تحسينات إضافية للشاشات الصغيرة جداً */
+@media screen and (max-width: 480px) {
+    .hero {
+        height: 400px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .product-info h3 {
+        font-size: 1.2rem;
+    }
+
+    .product-footer {
         flex-direction: column;
         gap: 10px;
     }
 
-    .newsletter input, .newsletter button {
-        width: 100%;
-        border-radius: var(--border-radius);
-    }
-
-    .cart {
-        width: 100%;
-        right: -100%;
-    }
-
-    .consultation-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .category-tabs {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .tab-btn {
-        width: 200px;
-        text-align: center;
-    }
-    
-    .lessons-grid {
-        grid-template-columns: 1fr;
+    .price {
+        font-size: 1.1rem;
     }
 }
 
-@media (max-width: 480px) {
-    .container {
-        padding: 0 15px;
-    }
-    
-    .consultation-form {
-        padding: 25px;
-    }
-    
-    .lesson-card {
-        padding: 20px;
-    }
-}
-
-/* تنسيقات إضافية */
-.product-image {
-    height: 220px;
-    overflow: hidden;
-}
-
-del {
-    text-decoration: line-through;
-}
-
-/* تنسيقات العرض السريع */
 .quick-view-overlay {
     position: fixed;
     top: 0;
